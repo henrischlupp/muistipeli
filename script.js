@@ -2,7 +2,7 @@ const board = document.getElementById("game-board");
 const startButton = document.getElementById("start-button");
 
 const imageNames = [
-  "C.png", "CSharp.png", "C++.png", "go.png",
+  "C.png", "Csharp.png", "C++.png", "go.png",
   "html.png", "java.png", "JavaScript.png", "python.png"
 ];
 
