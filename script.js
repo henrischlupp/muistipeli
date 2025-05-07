@@ -2,7 +2,7 @@ const board = document.getElementById("game-board");
 const startButton = document.getElementById("start-button");
 
 const imageNames = [
-  "C.png", "CSharp.png", "C++.png", "go.png",
+  "C.png", "Csharp.png", "C++.png", "go.png",
   "html.png", "java.png", "JavaScript.png", "python.png"
 ];
 
@@ -10,6 +10,7 @@ let cards = [];
 let flippedCards = [];
 let matched = 0;
 
+//  Fisher-Yatesin algoritmi
 function shuffleCards(array) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -64,7 +65,7 @@ function checkMatch() {
   if (img1.src === img2.src) {
     matched++;
     if (matched === imageNames.length) {
-      alert("Voitit pelin! 🎉");
+      alert("Voitit pelin!");
     }
   } else {
     img1.style.display = "none";
