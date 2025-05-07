@@ -1,66 +1,78 @@
-const board = document.getElementById('game-board');
+const board = document.getElementById("game-board");
+const startButton = document.getElementById("start-button");
 
-// Lista kuvatiedostoista (2 x jokainen kuva)
-const images = [
-    'C.png', 'C#.png', 'C++.png', 'go.png',
-    'html.png', 'java.png', 'JavaScript.png', 'python.png'
+const imageNames = [
+  "C.png", "C#.png", "C++.png", "go.png",
+  "html.png", "java.png", "JavaScript.png", "python.png"
 ];
 
-let cards = [...images, ...images]; // 8 paria = 16 korttia
+let cards = [];
 let flippedCards = [];
-let matchedPairs = 0;
+let matched = 0;
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
+function shuffleCards(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
 
 function createBoard() {
-    shuffle(cards);
-    for (let i = 0; i < cards.length; i++) {
-        const card = document.createElement('div');
-        card.className = 'card';
+  // Tyhjennä lauta ja nollaa peli
+  board.innerHTML = "";
+  flippedCards = [];
+  matched = 0;
 
-        const img = document.createElement('img');
-        img.src = 'img/' + cards[i];
-        img.style.display = 'none';
+  // Luo uudet kortit
+  cards = imageNames.concat(imageNames);
+  shuffleCards(cards);
 
-        card.appendChild(img);
-        card.addEventListener('click', () => flipCard(card, img));
-        board.appendChild(card);
-    }
+  for (let i = 0; i < cards.length; i++) {
+    let card = document.createElement("div");
+    card.className = "card";
+
+    let img = document.createElement("img");
+    img.src = "img/" + cards[i];
+    img.style.display = "none";
+
+    card.appendChild(img);
+    board.appendChild(card);
+
+    card.addEventListener("click", function () {
+      flipCard(img);
+    });
+  }
 }
 
-function flipCard(card, img) {
-    if (flippedCards.length < 2 && !img.classList.contains('matched') && img.style.display === 'none') {
-        img.style.display = 'block';
-        flippedCards.push({ card, img });
+function flipCard(img) {
+  if (flippedCards.length < 2 && img.style.display === "none") {
+    img.style.display = "block";
+    flippedCards.push(img);
 
-        if (flippedCards.length === 2) {
-            setTimeout(checkMatch, 800);
-        }
+    if (flippedCards.length === 2) {
+      setTimeout(checkMatch, 1000);
     }
+  }
 }
 
 function checkMatch() {
-    const [first, second] = flippedCards;
+  let img1 = flippedCards[0];
+  let img2 = flippedCards[1];
 
-    if (first.img.src === second.img.src) {
-        first.img.classList.add('matched');
-        second.img.classList.add('matched');
-        matchedPairs++;
-
-        if (matchedPairs === images.length) {
-            setTimeout(() => alert('Voitit pelin! Kaikki parit löytyivät! 🎉'), 200);
-        }
-    } else {
-        first.img.style.display = 'none';
-        second.img.style.display = 'none';
+  if (img1.src === img2.src) {
+    matched++;
+    if (matched === imageNames.length) {
+      alert("Voitit pelin! 🎉");
     }
+  } else {
+    img1.style.display = "none";
+    img2.style.display = "none";
+  }
 
-    flippedCards = [];
+  flippedCards = [];
 }
 
-createBoard();
+// Käynnistetään peli kun nappia painetaan
+startButton.addEventListener("click", createBoard);
